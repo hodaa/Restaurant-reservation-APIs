@@ -29,12 +29,13 @@ class ReservationService
     {
         
         $tables = $this->getAvailableTables($reservationData->capacity, $reservationData->from_time, $reservationData->to_time);
+        $status = ReservationStatus::WAITING_LIST;
         if (count($tables)) {
            $reservationData->table_id = $tableId = $tables->first()->id;
            $status = ReservationStatus::CONFIRMED;
         }
 
-        $status = ReservationStatus::WAITING_LIST;
+        
         $this->reservationRepository->createReservation($reservationData,$status);
         return $tableId ?? null;
     }

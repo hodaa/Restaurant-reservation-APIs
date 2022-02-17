@@ -38,7 +38,7 @@ class OrderService
 
     public function calculatePrice(float $price, int $discount)
     {
-        return ceil($price - ($price * ($discount / 100)));
+        return round($price - ($price * ($discount / 100)),2);
     }
 
     public function checkout($order_id)

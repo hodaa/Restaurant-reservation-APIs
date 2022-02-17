@@ -2,15 +2,18 @@
 
 namespace App\Repositories;
 
+use App\Enums\ReservationStatus;
 use Carbon\Carbon;
 use App\Models\Order;
 use App\Models\OrderDetails;
+use App\Models\Table;
 
 class OrderRepository
 {
     public function storeOrder(array $data)
     {
         $data['date'] = Carbon::now();
+        $data['reservation_id'] = $this->getCurrentReservation($data['table_id']);
         $order = new Order();
         $order->fill($data);
         $order->save();
@@ -37,5 +40,10 @@ class OrderRepository
     public function getOrderDetails(int $order_id)
     {
         return Order::find($order_id)->details;
+    }
+
+    public function getCurrentReservation(int $table_id)
+    {
+        return Table::find($table_id)->reservations->where('status', ReservationStatus::CONFIRMED)->first()->id;
     }
 }

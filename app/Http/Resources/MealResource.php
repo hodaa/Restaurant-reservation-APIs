@@ -17,8 +17,8 @@ class MealResource extends JsonResource
     {
         return [
             'description'=> $this->description,
-            'price'=> $this->price,
-            'discount' => $this->discount,
+            'price'=> $this->price, 
+            'discount' => $this->discount .'%',
             'price_after_discount'=> app(OrderService::class)->calculatePrice($this->price,$this->discount)
         ];
     }

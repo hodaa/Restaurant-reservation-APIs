@@ -12,8 +12,12 @@ class ReservationRepository
     public function buildTableAvailableQuery($start_time, $to_time)
     {
         return Table::whereDoesntHave('reservations', function (Builder $query) use ($start_time, $to_time) {
-            $query->where('reservations.from_time', '=', $start_time);
-            $query->where('reservations.to_time', '=', $to_time);
+            $query->where('reservations.from_time', '<=', $start_time);
+            $query->where('reservations.from_time', '<=', $to_time);
+            $query->where('reservations.to_time', '>=', $start_time);
+            $query->where('reservations.to_time', '>=', $to_time);
+
+            $query->where('reservations.status', '!=', ReservationStatus::CHECKOUT);
         })->select('tables.id', 'tables.capacity');
     }
 

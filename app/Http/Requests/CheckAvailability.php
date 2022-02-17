@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class MakeOrderRequest extends FormRequest
+class CheckAvailability extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,9 +24,9 @@ class MakeOrderRequest extends FormRequest
     public function rules()
     {
         return [
-            'customer_id'=> 'required',
-            'waiter_id'=> 'required',
-            'meals.*'=>'required'
+            'capacity'=>'required|integer',
+            'form_time' => 'required|date_format:H:i',
+            'to_time' => 'required|date_format:H:i,after:form_time'
         ];
     }
 }

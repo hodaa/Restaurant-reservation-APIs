@@ -8,6 +8,10 @@ use App\Services\ReservationService;
 use App\Http\Requests\ReservationRequest;
 use App\Http\Resources\InvoiceResource;
 use App\Services\OrderService;
+use App\Http\Requests\CheckAvailability;
+
+use Exception;
+
 
 class TableController extends Controller
 {
@@ -20,7 +24,7 @@ class TableController extends Controller
     }
 
   
-    public function checkAvailability(Request $request)
+    public function checkAvailability(CheckAvailability $request)
     {
         return $this->reservationService->getAvailableTables($request->capacity, $request->form_time, $request->to_time);
     }
@@ -35,10 +39,14 @@ class TableController extends Controller
     
     public function order(MakeOrderRequest $request)
     {
-        $data = $request->input();
-        $data['table_id'] = $request->id;
-        $order = app(OrderService::class)->makeOrder($data);
-        return response(['message'=>"Your order is being prepared"]);
+        try {
+            $data = $request->input();
+            $data['table_id'] = $request->id;
+            $order = app(OrderService::class)->makeOrder($data);
+            return response(['message'=>"Your order is being prepared"]);
+        } catch(Exception $e){
+            return response(['error'=> "This table has no  reservation"]);
+        }
     }
 
     public function checkout(Request $request)
