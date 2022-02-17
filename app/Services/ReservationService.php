@@ -16,7 +16,7 @@ class ReservationService
 
     public function getAvailableTables($capacity, $start_time, $end_time)
     {
-        return $this->reservationRepository->buildTableAvailableQuery($start_time, $end_time)->where('tables.capacity', '>=', $capacity)->groupBy('tables.id')->get();
+        return $this->reservationRepository->buildTableAvailableQuery($start_time, $end_time)->where('tables.capacity', '>=', $capacity)->groupBy('tables.id','tables.capacity')->get();
     }
 
     public function checkTableAvailable($table_id, $start_time, $end_time)
