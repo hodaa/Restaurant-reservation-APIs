@@ -26,7 +26,7 @@ APIs that represent restaurant reservation process.
 
 
 # Apis
- git push --set-upstream origin master
+https://www.getpostman.com/collections/13cc590a331522e34189
 
 
 ## Tools
